@@ -23,6 +23,7 @@ public class Rental {
         private String kodepeg;
     
         private String namapeg;
+        private String alamatpeg;
     
     //getter
     public String getKodedvd() {
