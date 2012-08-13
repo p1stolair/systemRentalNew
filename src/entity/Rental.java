@@ -19,10 +19,10 @@ public class Rental {
         private String stok;
         
         
-    private String kodemem;
-    private String kodepeg;
+        private String kodemem;
+        private String kodepeg;
     
-    private String namapeg;
+        private String namapeg;
     
     //getter
     public String getKodedvd() {
