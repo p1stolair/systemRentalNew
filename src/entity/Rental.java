@@ -24,6 +24,7 @@ public class Rental {
     
         private String namapeg;
         private String alamatpeg;
+        private String telppeg;
     
     //getter
     public String getKodedvd() {
