@@ -7,7 +7,7 @@ package entity;
 
 /**
  *
- * @author suryono
+ * @author habibi dan riska
  */
 public class Rental {
     //variabel yang ada untuk entitas sama dengan yang di database
@@ -16,7 +16,7 @@ public class Rental {
         private String kodedvd;
         private String judul;
         private String dvddate;
-        private String stok;
+        private int stok;
         
         
         private String kodemem;
@@ -51,11 +51,11 @@ public class Rental {
         this.dvddate = dvddate;
     }
     //getter
-    public String getStok() {
+    public int getStok() {
         return stok;
     }
     //setter
-    public void setStok(String stok) {
+    public void setStok(int stok) {
         this.stok = stok;
     }
 
