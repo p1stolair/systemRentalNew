@@ -13,9 +13,11 @@ public class Rental {
     //variabel yang ada untuk entitas sama dengan yang di database
         
         //entitas dvd
-        private String kodedvd;
+        private int kodedvd;
         private String judul;
         private String dvddate;
+        private String genre;
+        private String status;
         private int stok;
         
         
@@ -25,13 +27,15 @@ public class Rental {
         private String namapeg;
         private String alamatpeg;
         private String telppeg;
+        private int kode;
+        
     
     //getter
-    public String getKodedvd() {
+    public int getKodedvd() {
         return kodedvd;
     }
     //setter
-    public void setKodedvd(String kodedvd) {
+    public void setKodedvd(int kodedvd) {
         this.kodedvd = kodedvd;
     }
     //getter
@@ -57,6 +61,27 @@ public class Rental {
     //setter
     public void setStok(int stok) {
         this.stok = stok;
+    }
+    public String getGenre() {
+        return genre;
+    }
+    //setter
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+    public String getStatus() {
+        return status;
+    }
+    //setter
+    public void setStatus(String status) {
+        this.status = status;
+    }
+    public int getKode() {
+        return kode;
+    }
+    //setter
+    public void setKode(int status) {
+        this.kode = kode;
     }
 
     
