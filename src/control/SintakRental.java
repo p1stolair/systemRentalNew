@@ -32,6 +32,7 @@ public class SintakRental {
     private Connection con;
     //untuk mendapatkan array dari pejabat
     private List<Rental> list;
+    private int kode;
 
     public SintakRental() {
         try {
@@ -67,14 +68,16 @@ public class SintakRental {
         try {
             //membuat statement
             Statement st = con.createStatement();
-            String sql = "SELECT * FROM dvd";
+            String sql = "SELECT * FROM dvd order by kodedvd desc";
             //mendapatkan data dari tabel dalam bentuk result set
             ResultSet rs = st.executeQuery(sql);
             list = new ArrayList<Rental>();
             while (rs.next()) {
                 Rental pj = new Rental();
-                pj.setKodedvd(rs.getString("kodedvd"));
+                pj.setKodedvd(rs.getInt("kodedvd"));
                 pj.setJudul(rs.getString("judul"));
+                pj.setGenre(rs.getString("genre"));
+                pj.setStatus(rs.getString("status"));
                 pj.setStok(rs.getInt("stok"));
                 list.add(pj);
             }
@@ -86,21 +89,46 @@ public class SintakRental {
         return list;
 
     }
-//method untuk insert ke database
+//method untuk generate kode dvd
 
+    public int getKode() {
+        try {
+            //membuat statement
+            String sql = "SELECT max( kodedvd ) AS kode FROM dvd ORDER BY kodedvd DESC ";
+            Statement st = con.createStatement();
+            //mendapatkan data dari tabel dalam bentuk result set
+          
+            ResultSet rs = st.executeQuery(sql);
+            while ( rs.next() ) {
+                kode = rs.getInt("kode");
+            }
+           
+            Rental pj = new Rental();
+            
+
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "kesalahan pada sintak : " + ex);
+        }
+        return kode;
+    }
+
+//method untuk insert ke database
     public void insertdvd(Rental pj) {
         try {
             //Memecah tanggal yang tampilannya dd-mm-yyyy
-            String thn=pj.getDdate().substring(6, 10);
-            String bln=pj.getDdate().substring(3, 5);
-            String tgl=pj.getDdate().substring(0, 2);
-            
-            String sql = "INSERT INTO dvd VALUES(?,?,?,?)";
+            String thn = pj.getDdate().substring(6, 10);
+            String bln = pj.getDdate().substring(3, 5);
+            String tgl = pj.getDdate().substring(0, 2);
+
+            String sql = "INSERT INTO dvd VALUES(?,?,?,?,?,?)";
             PreparedStatement ps = this.con.prepareStatement(sql);
-            ps.setString(1, pj.getKodedvd());
+            ps.setInt(1, pj.getKodedvd());
             ps.setString(2, pj.getJudul());
-            ps.setString(3, thn+"-"+bln+"-"+tgl);
-            ps.setInt(4, pj.getStok());
+            ps.setString(3, thn + "-" + bln + "-" + tgl);
+            ps.setString(4, pj.getGenre());
+            ps.setString(5, pj.getStatus());
+            ps.setInt(6, pj.getStok());
             ps.executeUpdate();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "kesalahan pada sintak : " + ex);
@@ -108,13 +136,15 @@ public class SintakRental {
     }
 //method untuk update ke database
 
-    public void updatedvd(String no, Rental pj) {
+    public void updatedvd(int no, Rental pj) {
         try {
-            String sql = "UPDATE dvd set judul=?, stok=? WHERE kodedvd=?";
+            String sql = "UPDATE dvd set judul=?, stok=?, genre=?, status=? WHERE kodedvd=?";
             PreparedStatement ps = this.con.prepareStatement(sql);
             ps.setString(1, pj.getJudul());
             ps.setInt(2, pj.getStok());
-            ps.setString(3, no);
+            ps.setString(3, pj.getGenre());
+            ps.setString(4, pj.getStatus());
+            ps.setInt(5, no);
             ps.executeUpdate();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "kesalahan pada sintak : " + ex);
@@ -123,11 +153,11 @@ public class SintakRental {
     }
 //method untuk delete database
 
-    public void deletedvd(String no) {
+    public void deletedvd(int no) {
         try {
             String sql = "DELETE from dvd WHERE kodedvd=?";
             PreparedStatement ps = this.con.prepareStatement(sql);
-            ps.setString(1, no);
+            ps.setInt(1, no);
             ps.executeUpdate();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "kesalahan pada sintak : " + ex);
@@ -135,21 +165,24 @@ public class SintakRental {
 
 
     }
-//method untuk pencarian
 
+//method untuk pencarian
     public List<Rental> read(String no) {
         try {
-            Statement st = con.createStatement();
-            String sql = "SELECT * FROM dvd WHERE kodedvd like ? or judul like ?";
+
+            String sql = "SELECT * FROM dvd WHERE kodedvd like ? or judul like ? or genre like ?";
             list = new ArrayList<Rental>();
             PreparedStatement ps = this.con.prepareStatement(sql);
-            ps.setString(1, "%"+ no + "%");
-            ps.setString(2, "%"+ no + "%");
+            ps.setString(1, "%" + no + "%");
+            ps.setString(2, "%" + no + "%");
+            ps.setString(3, "%" + no + "%");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Rental pj = new Rental();
-                pj.setKodedvd(rs.getString("kodedvd"));
+                pj.setKodedvd(rs.getInt("kodedvd"));
                 pj.setJudul(rs.getString("judul"));
+                pj.setGenre(rs.getString("genre"));
+                pj.setStatus(rs.getString("status"));
                 pj.setStok(rs.getInt("stok"));
                 list.add(pj);
 
@@ -159,6 +192,6 @@ public class SintakRental {
             JOptionPane.showMessageDialog(null, "kesalahan pada sintak : " + ex);
         }
         return list;
-        
+
     }
 }
