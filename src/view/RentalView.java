@@ -48,7 +48,7 @@ public class RentalView extends javax.swing.JFrame {
             initComponents();
             Tanggal();
             setTitle("FORM MASTER");
-            setLocation(350,50);
+            setLocation(370,50);
             
             txtNo.setEditable(false);
             dao.connect();
