@@ -32,7 +32,12 @@ public class SintakRental {
     private Connection con;
     //untuk mendapatkan array dari pejabat
     private List<Rental> list;
+    //variabel pembantu
     private int kode;
+    private int kodemem;
+    private String charmem;
+    private int nomem;
+    private String jk;
 
     public SintakRental() {
         try {
@@ -62,7 +67,7 @@ public class SintakRental {
     public void disconnect() throws SQLException {
         this.con.close();
     }
-    //method mendapatkan data dari database pejabat dalam bentuk array
+    //method mendapatkan data dari tabel dvd dalam bentuk array
 
     public List<Rental> readdvd() {
         try {
@@ -89,28 +94,112 @@ public class SintakRental {
         return list;
 
     }
-//method untuk generate kode dvd
 
-    public int getKode() {
+    //method mendapatkan data dari tabel member dalam bentuk array
+    public List<Rental> readmem() {
         try {
             //membuat statement
-            String sql = "SELECT max( kodedvd ) AS kode FROM dvd ORDER BY kodedvd DESC ";
             Statement st = con.createStatement();
+            String sql = "SELECT * FROM member order by kodemem desc";
             //mendapatkan data dari tabel dalam bentuk result set
-          
             ResultSet rs = st.executeQuery(sql);
-            while ( rs.next() ) {
-                kode = rs.getInt("kode");
+            list = new ArrayList<Rental>();
+            while (rs.next()) {
+                Rental pj = new Rental();
+                pj.setKodemem(rs.getString("kodemem"));
+                pj.setNamamem(rs.getString("namamem"));
+                pj.setAlamatmem(rs.getString("alamatmem"));
+                pj.setTelpmem(rs.getString("telpmem"));
+                pj.setDatemem(rs.getString("datemem"));
+                list.add(pj);
             }
-           
-            Rental pj = new Rental();
-            
 
 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "kesalahan pada sintak : " + ex);
         }
+        return list;
+
+    }
+//method untuk generate kode dvd
+
+    public int getKode() {
+        try {
+            //membuat statement
+            String sql = "SELECT max( kodedvd ) AS kode FROM dvd ";
+            Statement st = con.createStatement();
+            //mendapatkan data dari tabel dalam bentuk result set
+
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                kode = rs.getInt("kode");
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "kesalahan pada sintak : " + ex);
+        }
         return kode;
+    }
+
+//method untuk generate kode member
+    public void setKodemem(String no) {
+        try {
+            //membuat statement
+            String sql = "SELECT max(nomem) AS kode FROM member WHERE charmem like ? ";
+            PreparedStatement ps = this.con.prepareStatement(sql);
+            ps.setString(1, no + "%");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                kodemem = rs.getInt("kode");
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "kesalahan pada sintak : " + ex);
+        }
+
+        this.kodemem = kodemem;
+
+    }
+
+    public int getKodemem() {
+        return kodemem;
+    }
+
+//method untuk generate kode charmem dan nomem
+    public void setCharNo(String no) {
+        try {
+            //membuat statement
+            String sql = "SELECT charmem,nomem,jk FROM member WHERE kodemem = ? ";
+            System.out.println("no");
+            PreparedStatement ps = this.con.prepareStatement(sql);
+            ps.setString(1, no);
+            ResultSet rs = ps.executeQuery();
+            Rental pj = new Rental();
+            while (rs.next()) {
+                charmem = rs.getString("charmem");
+                nomem = rs.getInt("nomem");
+                jk = rs.getString("jk");
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "kesalahan pada sintak : " + ex);
+        }
+
+        this.charmem = charmem;
+        this.nomem = nomem;
+        this.jk = jk;
+    }
+
+    public String getCharmem() {
+        return charmem;
+    }
+
+    public int getNomem() {
+        return nomem;
+    }
+
+    public String getJK() {
+        return jk;
     }
 
 //method untuk insert ke database
@@ -134,8 +223,31 @@ public class SintakRental {
             JOptionPane.showMessageDialog(null, "kesalahan pada sintak : " + ex);
         }
     }
-//method untuk update ke database
 
+    public void insertmem(Rental pj) {
+        try {
+            //Memecah tanggal yang tampilannya dd-mm-yyyy
+            String thn = pj.getDatemem().substring(6, 10);
+            String bln = pj.getDatemem().substring(3, 5);
+            String tgl = pj.getDatemem().substring(0, 2);
+
+            String sql = "INSERT INTO member VALUES(?,?,?,?,?,?,?)";
+            PreparedStatement ps = this.con.prepareStatement(sql);
+            ps.setString(1, pj.getKodemem());
+            ps.setString(2, pj.getCharmem());
+            ps.setInt(3, pj.getNomem());
+            ps.setString(4, pj.getNamamem());
+            ps.setString(5, pj.getAlamatmem());
+            ps.setString(6, pj.getTelpmem());
+            ps.setString(7, thn + "-" + bln + "-" + tgl);
+
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "kesalahan pada sintak : " + ex);
+        }
+    }
+
+//method untuk update ke database
     public void updatedvd(int no, Rental pj) {
         try {
             String sql = "UPDATE dvd set judul=?, stok=?, genre=?, status=? WHERE kodedvd=?";
@@ -151,8 +263,23 @@ public class SintakRental {
         }
 
     }
-//method untuk delete database
 
+    public void updatemem(String no, Rental pj) {
+        try {
+            String sql = "UPDATE member set namamem=?, alamatmem=?, telpmem=? WHERE kodemem=?";
+            PreparedStatement ps = this.con.prepareStatement(sql);
+            ps.setString(1, pj.getNamamem());
+            ps.setString(2, pj.getAlamatmem());
+            ps.setString(3, pj.getTelpmem());
+            ps.setString(4, no);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "kesalahan pada sintak : " + ex);
+        }
+
+    }
+
+//method untuk delete database
     public void deletedvd(int no) {
         try {
             String sql = "DELETE from dvd WHERE kodedvd=?";
@@ -166,16 +293,28 @@ public class SintakRental {
 
     }
 
+    public void deletemem(String no) {
+        try {
+            String sql = "DELETE from member WHERE kodemem=?";
+            PreparedStatement ps = this.con.prepareStatement(sql);
+            ps.setString(1, no);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "kesalahan pada sintak : " + ex);
+        }
+    }
+
 //method untuk pencarian
     public List<Rental> read(String no) {
         try {
 
-            String sql = "SELECT * FROM dvd WHERE kodedvd like ? or judul like ? or genre like ?";
+            String sql = "SELECT * FROM dvd WHERE kodedvd like ? or judul like ? or genre like ? or status like ?";
             list = new ArrayList<Rental>();
             PreparedStatement ps = this.con.prepareStatement(sql);
             ps.setString(1, "%" + no + "%");
             ps.setString(2, "%" + no + "%");
             ps.setString(3, "%" + no + "%");
+            ps.setString(4, "%" + no + "%");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Rental pj = new Rental();
@@ -184,6 +323,32 @@ public class SintakRental {
                 pj.setGenre(rs.getString("genre"));
                 pj.setStatus(rs.getString("status"));
                 pj.setStok(rs.getInt("stok"));
+                list.add(pj);
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "kesalahan pada sintak : " + ex);
+        }
+        return list;
+
+    }
+
+    public List<Rental> readmemall(String no) {
+        try {
+
+            String sql = "SELECT * FROM member WHERE kodemem like ? or namamem like ? ";
+            list = new ArrayList<Rental>();
+            PreparedStatement ps = this.con.prepareStatement(sql);
+            ps.setString(1, "%" + no + "%");
+            ps.setString(2, "%" + no + "%");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Rental pj = new Rental();
+                pj.setKodemem(rs.getString("kodemem"));
+                pj.setNamamem(rs.getString("namamem"));
+                pj.setAlamatmem(rs.getString("alamatmem"));
+                pj.setTelpmem(rs.getString("telpmem"));
+                pj.setDatemem(rs.getString("datemem"));
                 list.add(pj);
 
             }
