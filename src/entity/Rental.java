@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package entity;
 
 /**
@@ -11,80 +10,158 @@ package entity;
  */
 public class Rental {
     //variabel yang ada untuk entitas sama dengan yang di database
-        
-        //entitas dvd
-        private int kodedvd;
-        private String judul;
-        private String dvddate;
-        private String genre;
-        private String status;
-        private int stok;
-        
-        
-        private String kodemem;
-        private String kodepeg;
+
+    //entitas tabel dvd
+    private int kodedvd;
+    private String judul;
+    private String dvddate;
+    private String genre;
+    private String status;
+    private int stok;
     
-        private String namapeg;
-        private String alamatpeg;
-        private String telppeg;
-        private int kode;
-        
+    //entitas tabel member
+    private String kodemem;
+    private String namamem;
+    private String alamatmem;
+    private String telpmem;
+    private String datemem;
+    private String jk;
     
-    //getter
+    //entitas tabel pegawai
+    private String kodepeg;
+    private String namapeg;
+    private String alamatpeg;
+    private String telppeg;
+    
+    //entitas pembantu
+    private int kode;
+    private String charmem;
+    private int nomem;
+
+    
+//method untuk entitas dvd
+    
     public int getKodedvd() {
         return kodedvd;
     }
-    //setter
+
     public void setKodedvd(int kodedvd) {
         this.kodedvd = kodedvd;
     }
-    //getter
+    
     public String getJudul() {
         return judul;
     }
-    //setter
+    
     public void setJudul(String judul) {
         this.judul = judul;
     }
-    //getter
+   
     public String getDdate() {
         return dvddate;
     }
-    //setter
+    
     public void setDdate(String dvddate) {
         this.dvddate = dvddate;
     }
-    //getter
+    
     public int getStok() {
         return stok;
     }
-    //setter
+    
     public void setStok(int stok) {
         this.stok = stok;
     }
+
     public String getGenre() {
         return genre;
     }
-    //setter
+    
     public void setGenre(String genre) {
         this.genre = genre;
     }
+
     public String getStatus() {
         return status;
     }
-    //setter
+    
     public void setStatus(String status) {
         this.status = status;
     }
+    
+//method pembantu
+
     public int getKode() {
         return kode;
     }
-    //setter
+    
     public void setKode(int status) {
         this.kode = kode;
     }
 
+
+    public void setCharmem(String charmem) {
+        this.charmem = charmem;
+    }
+    public String getCharmem() {
+        return charmem;
+    }
+    public void setNomem(int nomem) {
+        this.nomem = nomem;
+    }
+    public int getNomem() {
+        return nomem;
+    }
+   
+
+//method untuk entitas member
     
+    public String getKodemem() {
+        return kodemem;
+    }
+    
+    public void setKodemem(String kodemem) {
+        this.kodemem = kodemem;
+    }
+    
+    public String getNamamem() {
+        return namamem;
+    }
+    
+    public void setNamamem(String namamem) {
+        this.namamem = namamem;
+    }
+    
+    public String getAlamatmem() {
+        return alamatmem;
+    }
 
+    public void setAlamatmem(String alamatmem) {
+        this.alamatmem = alamatmem;
+    }
+    
+    public String getTelpmem() {
+        return telpmem;
+    }
 
+    public void setTelpmem(String telpmem) {
+        this.telpmem = telpmem;
+    }
+    
+    public String getDatemem() {
+        return datemem;
+    }
+
+    public void setDatemem(String datemem) {
+        this.datemem = datemem;
+    }
+    
+    public String getJK() {
+        return jk;
+    }
+
+    public void setJK(String jk) {
+        this.jk = jk;
+    }
+    
 }
