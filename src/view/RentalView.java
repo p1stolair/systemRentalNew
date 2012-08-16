@@ -48,13 +48,13 @@ public class RentalView extends javax.swing.JFrame {
             initComponents();
             Tanggal();
             setTitle("FORM MASTER");
-            setLocation(370,50);
-            
+            setLocation(370, 50);
+
             txtNo.setEditable(false);
             dao.connect();
             //generate kode dvd
-            txtNo.setText(String.valueOf(dao.getKode()+1));
-            
+            txtNo.setText(String.valueOf(dao.getKode() + 1));
+
             List<Rental> list = new ArrayList<Rental>();
             list = dao.readdvd();
             TableModel tableModel = new TabelRental(list);
@@ -84,6 +84,8 @@ public class RentalView extends javax.swing.JFrame {
         txtJudul.setText("");
         txtStok.setText("");
         txtCari.setText("");
+        cbGenre.setSelectedItem("Action");
+        cbStatus.setSelectedItem("New Release");
     }
 
     /**
@@ -128,6 +130,7 @@ public class RentalView extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -138,12 +141,6 @@ public class RentalView extends javax.swing.JFrame {
 
         jLabel1.setText("No DVD");
 
-        txtNo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNoActionPerformed(evt);
-            }
-        });
-
         btnReset.setText("Refresh");
         btnReset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -153,9 +150,21 @@ public class RentalView extends javax.swing.JFrame {
 
         jLabel3.setText("Date");
 
+        txtJudul.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtJudulActionPerformed(evt);
+            }
+        });
+
         jLabel2.setText("Judul");
 
         jLabel4.setText("Stok");
+
+        txtStok.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtStokActionPerformed(evt);
+            }
+        });
 
         btnInsert.setText("Insert");
         btnInsert.addActionListener(new java.awt.event.ActionListener() {
@@ -215,7 +224,12 @@ public class RentalView extends javax.swing.JFrame {
 
         jLabel7.setText("Genre");
 
-        cbGenre.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Action", "Bollywood", "Comedy", "Drama", "Fantasy", "Horor", "Korea", " ", " " }));
+        cbGenre.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Action", "Bollywood", "Comedy", "Drama", "Fantasy", "Horor", "Korea" }));
+        cbGenre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbGenreActionPerformed(evt);
+            }
+        });
 
         jLabel8.setText("Status");
 
@@ -240,6 +254,12 @@ public class RentalView extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnCari, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtDate, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(63, 63, 63))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -248,21 +268,7 @@ public class RentalView extends javax.swing.JFrame {
                                 .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnUpdate))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 662, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap())))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(239, 239, 239)
-                        .addComponent(jLabel6)
-                        .addGap(123, 123, 123)
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtDate, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 662, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(10, 10, 10)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -282,18 +288,22 @@ public class RentalView extends javax.swing.JFrame {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(btnReset)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel9)))))))
-                .addContainerGap())
+                                        .addComponent(jLabel9))))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel6)
+                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap())))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel3)
-                    .addComponent(txtDate, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE))
-                .addGap(47, 47, 47)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtDate, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtCari, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCari)
@@ -335,7 +345,20 @@ public class RentalView extends javax.swing.JFrame {
         jMenu1.setText("File");
 
         jMenuItem1.setText("Form Master");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem1);
+
+        jMenuItem3.setText("Form Member");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem3);
 
         jMenuItem2.setText("Form Pencarian");
         jMenu1.add(jMenuItem2);
@@ -478,29 +501,61 @@ public class RentalView extends javax.swing.JFrame {
     }//GEN-LAST:event_tabelRentalMouseClicked
 
     private void txtCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCariActionPerformed
-        // TODO add your handling code here:
+        try {
+            //mendapatkan nilai dari yang dicari
+            String cari = txtCari.getText();
+            List<Rental> list = new ArrayList<Rental>();
+            list = new ArrayList<Rental>();
+            dao.connect();
+            list = dao.read(cari);
+            //menampilkan yang dicari
+            TableModel tableModel = new TabelRental(list);
+            tabelRental.setModel(tableModel);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Kesalahan : " + ex);
+        }
     }//GEN-LAST:event_txtCariActionPerformed
-
-    private void txtNoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNoActionPerformed
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
         Refresh();
         try {
             dao.connect();
             //generate kode dvd
-            txtNo.setText(String.valueOf(dao.getKode()+1));
-            
+            txtNo.setText(String.valueOf(dao.getKode() + 1));
+
             List<Rental> list = new ArrayList<Rental>();
             list = dao.readdvd();
             TableModel tableModel = new TabelRental(list);
             tabelRental.setModel(tableModel);
+            
+            txtJudul.requestFocus();
 
         } catch (SQLException ex) {
             Logger.getLogger(RentalView.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnResetActionPerformed
+
+    private void txtJudulActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtJudulActionPerformed
+        cbGenre.requestFocus();
+    }//GEN-LAST:event_txtJudulActionPerformed
+
+    private void cbGenreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbGenreActionPerformed
+        txtStok.requestFocus();
+    }//GEN-LAST:event_cbGenreActionPerformed
+
+    private void txtStokActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtStokActionPerformed
+        cbStatus.requestFocus();
+    }//GEN-LAST:event_txtStokActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        new RentalMember().setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        new RentalView().setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -537,6 +592,7 @@ public class RentalView extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
