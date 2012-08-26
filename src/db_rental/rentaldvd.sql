@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 3.1.1
+-- version 3.2.0.1
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 26, 2012 at 10:59 AM
--- Server version: 5.1.30
--- PHP Version: 5.2.8
+-- Generation Time: Aug 26, 2012 at 10:00 
+-- Server version: 5.1.37
+-- PHP Version: 5.3.0
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS `dvd` (
   `SEWA` int(11) DEFAULT NULL,
   `STOK` int(11) DEFAULT NULL,
   PRIMARY KEY (`KODEDVD`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `dvd`
@@ -180,7 +180,8 @@ CREATE TABLE IF NOT EXISTS `petugas` (
 INSERT INTO `petugas` (`KODEPEG`, `NAMAPEG`, `PASSWORD`, `ALAMATPEG`, `TELPPEG`, `JKPEG`, `DATEPEG`, `LEVEL`) VALUES
 ('APB', 'Ade Putra Habibi', '81dc9bdb52d04dc20036dbd8313ed055', 'Jl. Bratang binangun', '085736217629', 'L', '2012-08-17', 'Admin'),
 ('FAS', 'Fadmanova Anantasean', '1234', 'Jl. Ketintang', '', 'P', '2012-08-17', 'Petugas'),
-('GYS', 'Galih Yuli Saputro', '81dc9bdb52d04dc20036dbd8313ed055', 'Jl. Dukuh Pakis', '', 'L', '2012-08-17', 'Petugas');
+('GYS', 'Galih Yuli Saputro', '81dc9bdb52d04dc20036dbd8313ed055', 'Jl. Dukuh Pakis', '', 'L', '2012-08-17', 'Petugas'),
+('RPS', 'Riska Puspita Sari', '110690', 'Jl Rajawali 5 Rewwin Waru', '085730749993', 'P', '2012-08-27', 'Admin');
 
 -- --------------------------------------------------------
 
@@ -209,3 +210,7 @@ INSERT INTO `transaksi` (`NMRTRANS`, `KODEPEG`, `KODEMEM`, `DATETRANS`, `TOTAL`)
 ('2012000003', 'APB', 'F00001', '2012-08-24', 3000),
 ('2012000002', 'APB', 'A00001', '2012-08-24', 1500),
 ('2012000001', 'APB', 'A00001', '2012-08-24', 0);
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
