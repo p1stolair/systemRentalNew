@@ -13,11 +13,11 @@ import javax.swing.table.AbstractTableModel;
  * @author habibi dan riska
  */
 //berguna untuk menampung data dari database terus ditampilkan ke tabel
-public class TabelPencarian extends AbstractTableModel {
+public class TabelHistory extends AbstractTableModel {
 
     List<Rental> list;
 
-    public TabelPencarian(List<Rental> list) {
+    public TabelHistory(List<Rental> list) {
         this.list = list;
     }
 
@@ -32,7 +32,7 @@ public class TabelPencarian extends AbstractTableModel {
     //mendapatkan jumlah kolom
 
     public int getColumnCount() {
-        return 5;
+        return 8;
     }
     //mendapatkan no dan nama
 
@@ -40,15 +40,22 @@ public class TabelPencarian extends AbstractTableModel {
 
         switch (columnIndex) {
             case 0:
-                return list.get(rowIndex).getKodemem();
+                return list.get(rowIndex).getKode1();
             case 1:
-                return list.get(rowIndex).getJmldvd();
+                return list.get(rowIndex).getKodepeg();
             case 2:
-                return list.get(rowIndex).getTglharus();
+                return list.get(rowIndex).getTgltrans();
             case 3:
-                return list.get(rowIndex).getTglkbl();
+                return list.get(rowIndex).getJmldvd();
             case 4:
-                return list.get(rowIndex).getStatus();
+                return list.get(rowIndex).getTotal();
+            case 5:
+                return list.get(rowIndex).getKodepem();
+            case 6:
+                return list.get(rowIndex).getTglkbl();
+            case 7:
+                return list.get(rowIndex).getDenda();
+
             default:
                 return null;
 
@@ -60,16 +67,21 @@ public class TabelPencarian extends AbstractTableModel {
     public String getColumnName(int column) {
         switch (column) {
             case 0:
-                return "Kode Member";
+                return "Kode Member / Kode DVD";
             case 1:
-                return "Jumlah Dipinjam";
+                return "Petugas Pelaksana";
             case 2:
-                return "Tanggal Pinjam";
+                return "Tgl Transaksi";
             case 3:
-                return "Tanggal Kembali";
+                return "Jml Dipinjam";
             case 4:
-                return "Status";
-
+                return "Total Trans";
+            case 5:
+                return "Petugas Pengembalian";
+            case 6:
+                return "Tgl Pengembalian";
+            case 7:
+                return "Denda";
             default:
                 return null;
 

@@ -32,7 +32,7 @@ public class TabelRental extends AbstractTableModel {
     //mendapatkan jumlah kolom
 
     public int getColumnCount() {
-        return 5;
+        return 6;
     }
     //mendapatkan no dan nama
 
@@ -46,8 +46,10 @@ public class TabelRental extends AbstractTableModel {
             case 2:
                 return list.get(rowIndex).getGenre();
             case 3:
-                return list.get(rowIndex).getStatus();
+                return list.get(rowIndex).getSewa();
             case 4:
+                return list.get(rowIndex).getStatus();
+            case 5:
                 return list.get(rowIndex).getStok();
             default:
                 return null;
@@ -66,8 +68,10 @@ public class TabelRental extends AbstractTableModel {
             case 2:
                 return "Genre";
             case 3:
-                return "Status";
+                return "Sewa";
             case 4:
+                return "Status";
+            case 5:
                 return "Stok";
             default:
                 return null;

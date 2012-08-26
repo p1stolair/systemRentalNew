@@ -13,45 +13,47 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableModel;
-import model.TabelRental;
+import model.TabelMember;
 
 /**
  *
  * @author APB
  */
-public class RentalPencarian extends javax.swing.JFrame {
+public class PickMember extends javax.swing.JDialog {
+
     SintakRental dao = new SintakRental();
     Rental pj;
+    private boolean succeeded;
 
     /**
-     * Creates new form RentalPencarian
+     * Creates new form PickMember
      */
-    public RentalPencarian() {
+    public PickMember(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
         initComponents();
-        setTitle("FORM KODE DVD");
+        setTitle("FORM KODE MEMBER");
         setLocation(400, 50);
-        txtCari.requestFocus();
+        txtKode.requestFocus();
         try {
             dao.connect();
             List<Rental> list = new ArrayList<Rental>();
-            list = dao.readdvd();
-            TableModel tableModel = new TabelRental(list);
-            tabelDVD.setModel(tableModel);
+            list = dao.readmem();
+            TableModel tableModel = new TabelMember(list);
+            tabelMember.setModel(tableModel);
             dao.disconnect();
         } catch (SQLException ex) {
-            Logger.getLogger(RentalPencarian.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PickMember.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-    
-    //method untuk menyimpan sesi user login
-    private static String kodeDVD;
 
-    public static void setKodeDVD(String kode) {
-        kodeDVD = kode;
     }
 
-    public static String getKodeDVD() {
-        return kodeDVD;
+    public boolean isSucceeded() {
+        return succeeded;
+    }
+
+    public String getKodeMember() {
+        int selected = tabelMember.getSelectedRow();
+        return String.valueOf(tabelMember.getValueAt(selected, 0));
     }
 
     /**
@@ -69,17 +71,17 @@ public class RentalPencarian extends javax.swing.JFrame {
         }catch(Exception e){}
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tabelDVD = new javax.swing.JTable();
+        tabelMember = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
-        txtCari = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
+        txtKode = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        tabelDVD.setModel(new javax.swing.table.DefaultTableModel(
+        tabelMember.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -90,24 +92,23 @@ public class RentalPencarian extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        tabelDVD.addMouseListener(new java.awt.event.MouseAdapter() {
+        tabelMember.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tabelDVDMouseClicked(evt);
+                tabelMemberMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(tabelDVD);
+        jScrollPane1.setViewportView(tabelMember);
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel1.setText("FORM PENCARIAN DATA  DVD");
-
-        txtCari.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCariActionPerformed(evt);
-            }
-        });
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gambar/Dictionary.png"))); // NOI18N
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        jLabel2.setText("Kategori Pencarian");
+        jLabel2.setText("Kode Pencarian");
+
+        txtKode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtKodeActionPerformed(evt);
+            }
+        });
 
         jButton1.setText("Cari");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -116,64 +117,60 @@ public class RentalPencarian extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gambar/180px-Dvd_icon.svg.png"))); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel3.setText("DAFTAR MEMBER");
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 3, 13)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(0, 153, 51));
-        jLabel4.setText("NB : Klik data pada tabel untuk melihat status DVD");
+        jLabel4.setText("NB : Klik data pada tabel untuk mendapatkan Kode Member");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(192, 192, 192)
-                        .addComponent(jLabel1)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap()
+                .addComponent(jScrollPane1)
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel3)
+                .addGap(220, 220, 220))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(285, 285, 285)
-                        .addComponent(jButton1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(32, 32, 32)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtCari, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(38, 38, 38)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtKode, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jButton1)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel4)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 96, Short.MAX_VALUE)
-                .addComponent(jLabel3)
-                .addGap(48, 48, 48))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(72, 72, 72))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(52, 52, 52)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(36, 36, 36))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1)
-                        .addGap(84, 84, 84)
+                .addContainerGap()
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(txtCari, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtKode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel4)
-                        .addGap(28, 28, 28)))
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE)
+                        .addGap(22, 22, 22)
+                        .addComponent(jLabel4))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -185,55 +182,56 @@ public class RentalPencarian extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCariActionPerformed
-        try {
-            //mendapatkan nilai dari yang dicari
-            String cari = txtCari.getText();
-            List<Rental> list = new ArrayList<Rental>();
-            list = new ArrayList<Rental>();
-            dao.connect();
-            list = dao.read(cari);
-            //menampilkan yang dicari
-            TableModel tableModel = new TabelRental(list);
-            tabelDVD.setModel(tableModel);
-            dao.disconnect();
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Kesalahan : " + ex);
-        }
-    }//GEN-LAST:event_txtCariActionPerformed
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
             //mendapatkan nilai dari yang dicari
-            String cari = txtCari.getText();
+            String cari = txtKode.getText();
             List<Rental> list = new ArrayList<Rental>();
             list = new ArrayList<Rental>();
             dao.connect();
-            list = dao.read(cari);
+            list = dao.readmemall(cari);
             //menampilkan yang dicari
-            TableModel tableModel = new TabelRental(list);
-            tabelDVD.setModel(tableModel);
-            dao.disconnect();
+            TableModel tableModel = new TabelMember(list);
+            tabelMember.setModel(tableModel);
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, "Kesalahan : " + ex);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void tabelDVDMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelDVDMouseClicked
-        int selected = tabelDVD.getSelectedRow();
+    private void txtKodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtKodeActionPerformed
+        try {
+            //mendapatkan nilai dari yang dicari
+            String cari = txtKode.getText();
+            List<Rental> list = new ArrayList<Rental>();
+            list = new ArrayList<Rental>();
+            dao.connect();
+            list = dao.readmemall(cari);
+            //menampilkan yang dicari
+            TableModel tableModel = new TabelMember(list);
+            tabelMember.setModel(tableModel);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Kesalahan : " + ex);
+        }
+    }//GEN-LAST:event_txtKodeActionPerformed
+
+    private void tabelMemberMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelMemberMouseClicked
+        int selected = tabelMember.getSelectedRow();
+        pj = new Rental();
         if (selected < 0) {
             JOptionPane.showMessageDialog(this, "Klik row tabel");
         } else {
-            this.setKodeDVD(String.valueOf(tabelDVD.getValueAt(selected, 0)));
-            new DataDVD().setVisible(true);
+            succeeded = true;
+            dispose();
         }
-    }//GEN-LAST:event_tabelDVDMouseClicked
+    }//GEN-LAST:event_tabelMemberMouseClicked
 
     /**
      * @param args the command line arguments
@@ -256,23 +254,31 @@ public class RentalPencarian extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(RentalPencarian.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PickMember.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(RentalPencarian.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PickMember.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(RentalPencarian.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PickMember.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(RentalPencarian.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PickMember.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /*
-         * Create and display the form
+         * Create and display the dialog
          */
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                new RentalPencarian().setVisible(true);
+                PickMember dialog = new PickMember(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
             }
         });
     }
@@ -284,7 +290,7 @@ public class RentalPencarian extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tabelDVD;
-    private javax.swing.JTextField txtCari;
+    private javax.swing.JTable tabelMember;
+    private javax.swing.JTextField txtKode;
     // End of variables declaration//GEN-END:variables
 }

@@ -13,11 +13,11 @@ import javax.swing.table.AbstractTableModel;
  * @author habibi dan riska
  */
 //berguna untuk menampung data dari database terus ditampilkan ke tabel
-public class TabelPencarian extends AbstractTableModel {
+public class TabelPetugas extends AbstractTableModel {
 
     List<Rental> list;
 
-    public TabelPencarian(List<Rental> list) {
+    public TabelPetugas(List<Rental> list) {
         this.list = list;
     }
 
@@ -40,15 +40,15 @@ public class TabelPencarian extends AbstractTableModel {
 
         switch (columnIndex) {
             case 0:
-                return list.get(rowIndex).getKodemem();
+                return list.get(rowIndex).getKodepeg();
             case 1:
-                return list.get(rowIndex).getJmldvd();
+                return list.get(rowIndex).getNamapeg();
             case 2:
-                return list.get(rowIndex).getTglharus();
+                return list.get(rowIndex).getAlamatpeg();
             case 3:
-                return list.get(rowIndex).getTglkbl();
+                return list.get(rowIndex).getTelppeg();
             case 4:
-                return list.get(rowIndex).getStatus();
+                return list.get(rowIndex).getDatepeg();
             default:
                 return null;
 
@@ -60,16 +60,15 @@ public class TabelPencarian extends AbstractTableModel {
     public String getColumnName(int column) {
         switch (column) {
             case 0:
-                return "Kode Member";
+                return "Kode Petugas";
             case 1:
-                return "Jumlah Dipinjam";
+                return "Nama";
             case 2:
-                return "Tanggal Pinjam";
+                return "Alamat";
             case 3:
-                return "Tanggal Kembali";
+                return "Telp";
             case 4:
-                return "Status";
-
+                return "Join Date";
             default:
                 return null;
 
